@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CktFormalizer: autoformalization of natural language into circuit representations with typed hardware infrastructure and interactive proof feedback.">
+  <meta name="theme-color" content="#07111f">
+  <title>CktFormalizer · Autoformalization into Circuit Representations</title>
+  <link rel="icon" type="image/svg+xml" href="./static/images/ckt-mark.svg?v=ckt-mark-2">
+  <link rel="stylesheet" href="./static/css/cktformalizer.css?v=proof-replay-2">
+</head>
+<body>
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="CktFormalizer home">
+        <img src="./static/images/ckt-mark.svg?v=ckt-mark-2" alt="">
+        <span>CktFormalizer</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#overview">Overview</a>
+        <a href="#cktlean">CktLean</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#results">Results</a>
+        <a href="#proof">Proof + PPA</a>
+        <a href="#cite">Cite</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="overview">
+      <div class="hero-inner hero-grid">
+        <div class="hero-copy reveal">
+          <h1><span class="accent">Ckt</span>Formalizer</h1>
+          <p class="hero-subtitle">Autoformalization of natural language into circuit representations.</p>
+          <p class="author-list" aria-label="Authors">
+            Jing Xiong,
+            Qi Han,
+            Chenchen Ding,
+            He Xiao,
+            Chaofan Tao,
+            Zunhai Su,
+            Qingyao Yang,
+            Xiachong Feng,
+            Kailai Yang, and
+            Ngai Wong
+          </p>
+          <div class="hero-meta" aria-label="Paper metadata">
+            <span>10 authors · University of Hong Kong + University of Manchester</span>
+            <span>Typed hardware infrastructure in Lean</span>
+            <span>Code available on GitHub</span>
+          </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="./static/files/cktformalizer-paper.pdf" target="_blank" rel="noopener">Read the paper <span aria-hidden="true">↗</span></a>
+            <a class="button button-subtle" href="https://github.com/menik1126/NL2Chip" target="_blank" rel="noopener noreferrer">Code <span aria-hidden="true">↗</span></a>
+            <a class="button button-ghost" href="#results">Explore results</a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <span class="floating-tag one">LEAN REPL · READY</span>
+          <span class="floating-tag two">SKY130 · VERIFIED FLOW</span>
+          <div class="visual-shell">
+            <div class="window-bar" aria-hidden="true">
+              <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+              <span class="window-label">cktformalizer / agent-loop</span>
+            </div>
+            <figure>
+              <img src="./static/images/figures/pipeline.png" alt="CktFormalizer pipeline from input specifications through Lean proof, synthesis, and physical design">
+              <figcaption class="visual-caption"><strong>One typed loop.</strong> Compiler diagnostics, proof states, simulation, and PPA feedback all become actionable signals for the hardware agent.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-strip reveal" aria-label="Headline results">
+        <div class="stat"><span class="stat-value">91.1–99.4%</span><span class="stat-label">compile pass across four benchmarks</span></div>
+        <div class="stat"><span class="stat-value">95.4–100%</span><span class="stat-label">physical-design pass among RTL-sim-passing designs</span></div>
+        <div class="stat"><span class="stat-value">+10 pp</span><span class="stat-label">kernel-accepted proof completion with stepwise feedback</span></div>
+        <div class="stat"><span class="stat-value">−58.6%</span><span class="stat-label">maximum synthesis-area reduction in the PPA loop</span></div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="cktlean">
+      <div class="section-inner">
+        <div class="split-grid">
+          <div class="split-copy reveal">
+            <p class="section-kicker">01 · The foundation</p>
+            <h2 class="section-title">A circuit IR that makes mistakes visible early.</h2>
+            <p><strong>CktLean</strong> extends Sparkle’s typed hardware representation, elaboration, and backend lowering. Widths, state, signedness, and clock domains remain explicit as a design moves from Lean source to SystemVerilog.</p>
+            <p>The persistent Lean REPL turns compiler diagnostics and proof goals into feedback an agent can use. That gives CktFormalizer a structured loop for generation, repair, optimization, and source-level equivalence proving.</p>
+            <ul class="gap-list" aria-label="Capability gaps addressed by CktLean">
+              <li>Parameterized state and memory</li>
+              <li>Dynamic bit operations and signed arithmetic</li>
+              <li>Multiple clock domains</li>
+              <li>Exhaustive case handling</li>
+              <li>Kernel-checked source equivalence</li>
+            </ul>
+          </div>
+          <div class="comparison reveal" aria-label="SystemVerilog versus CktLean">
+            <div class="comparison-head"><span>Capability</span><span>SystemVerilog</span><span>CktLean</span></div>
+            <div class="comparison-row"><span>Width consistency</span><span class="cross">✕</span><span class="check">✓</span></div>
+            <div class="comparison-row"><span>Register-guarded feedback</span><span class="cross">✕</span><span class="check">✓</span></div>
+            <div class="comparison-row"><span>Total case handling</span><span class="cross">✕</span><span class="check">✓</span></div>
+            <div class="comparison-row"><span>Primary diagnostics</span><span class="muted-cell">Tool logs</span><span class="check">Type / macro errors</span></div>
+            <div class="comparison-row"><span>Kernel-checked proofs</span><span class="cross">✕</span><span class="check">✓</span></div>
+            <div class="comparison-row"><span>Auto SystemVerilog extraction</span><span class="muted-cell">N/A</span><span class="check">✓</span></div>
+            <div class="comparison-note">Supported generation subset · summarized from Table 1 in the paper.</div>
+          </div>
+        </div>
+
+        <figure class="figure-card reveal" style="margin-top: 54px;">
+          <img src="./static/images/figures/typed-hardware.png" alt="Lean code examples for an 8-bit counter and a compile-time bit-width mismatch">
+          <figcaption><strong>Typed hardware representation.</strong> An 8-bit counter uses explicit register feedback, while adding incompatible widths is rejected by Lean’s type checker.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <div class="section-inner">
+        <div class="section-heading-row reveal">
+          <div>
+            <p class="section-kicker">02 · The agentic loop</p>
+            <h2 class="section-title">From intent to physically realizable hardware.</h2>
+          </div>
+          <p class="section-intro">CktFormalizer separates three kinds of correctness and lets each tool report back at the stage where it has the most leverage.</p>
+        </div>
+
+        <figure class="figure-card pipeline-frame reveal">
+          <img src="./static/images/figures/pipeline.png" alt="Detailed CktFormalizer workflow showing input specifications, an LLM coding agent, formal verification, synthesis and physical design, and a PPA optimization loop">
+          <figcaption><strong>Figure 2.</strong> The agent receives a natural-language specification and examples, then iterates through Lean compilation, proof development, RTL simulation, synthesis, place-and-route, and PPA feedback.</figcaption>
+        </figure>
+
+        <div class="step-row reveal" aria-label="Workflow stages">
+          <div class="step"><span class="step-no">STEP 01</span><strong>Specify</strong><span>Natural-language intent, benchmark examples, and a Lean exemplar.</span></div>
+          <div class="step"><span class="step-no">STEP 02</span><strong>Generate + repair</strong><span>Lean HDL is compiled in a persistent REPL; diagnostics guide edits.</span></div>
+          <div class="step"><span class="step-no">STEP 03</span><strong>Verify</strong><span>Prove source-level properties, then evaluate emitted RTL.</span></div>
+          <div class="step"><span class="step-no">STEP 04</span><strong>Optimize</strong><span>Use synthesis and P&amp;R metrics to explore and refine architectures.</span></div>
+        </div>
+
+        <div class="feature-grid" aria-label="Three dimensions of correctness">
+          <article class="feature-card reveal"><span class="feature-icon">⌁</span><span class="feature-index">/ 01</span><h3>Structural</h3><p>Lean checks bit widths, ports, clock-domain parameters, and exhaustive pattern matches before RTL extraction.</p></article>
+          <article class="feature-card reveal"><span class="feature-icon">∴</span><span class="feature-index">/ 02</span><h3>Formal</h3><p>Kernel-accepted lemmas establish circuit-to-specification or implementation-to-implementation equivalence under explicit assumptions.</p></article>
+          <article class="feature-card reveal"><span class="feature-icon">◉</span><span class="feature-index">/ 03</span><h3>Functional</h3><p>Reference simulation and RTL equivalence checks test whether the generated design behaves as intended on exercised traces.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section benchmarks-section" id="results">
+      <div class="section-inner">
+        <div class="section-heading-row reveal">
+          <div>
+            <p class="section-kicker">03 · Evidence</p>
+            <h2 class="section-title">High compile coverage, then the hard part: backend reality.</h2>
+          </div>
+          <p class="section-intro">Select a benchmark to inspect the end-to-end pass rates reported in Table 3. Values are percentages; downstream columns are conditioned on RTL simulation passing.</p>
+        </div>
+
+        <div class="benchmark-shell reveal">
+          <div class="benchmark-toolbar">
+            <div class="benchmark-tabs" role="tablist" aria-label="Benchmark selector">
+              <button class="benchmark-tab is-active" type="button" role="tab" aria-selected="true" data-benchmark="VerilogEval">VerilogEval</button>
+              <button class="benchmark-tab" type="button" role="tab" aria-selected="false" data-benchmark="RTLLM">RTLLM</button>
+              <button class="benchmark-tab" type="button" role="tab" aria-selected="false" data-benchmark="ResBench">ResBench</button>
+              <button class="benchmark-tab" type="button" role="tab" aria-selected="false" data-benchmark="CVDP">CVDP</button>
+            </div>
+            <span id="benchmark-count" class="table-note">VerilogEval · 156 problems</span>
+          </div>
+          <div class="table-wrap">
+            <table id="results-table" class="results-table" aria-label="Benchmark pass rates"></table>
+          </div>
+          <div id="benchmark-summary" class="benchmark-summary" aria-label="Selected benchmark summary"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="proof">
+      <div class="section-inner">
+        <div class="section-heading-row reveal">
+          <div>
+            <p class="section-kicker">04 · Proof + PPA</p>
+            <h2 class="section-title">Feedback does more than fix errors. It changes what the agent can search.</h2>
+          </div>
+          <p class="section-intro">Stepwise proof states improve formal completion, while synthesis feedback enables architecture exploration and correctness-aware PPA optimization.</p>
+        </div>
+
+        <div class="evidence-grid">
+          <article class="proof-demo reveal" aria-labelledby="proof-demo-title">
+            <div class="proof-demo-header">
+              <div>
+                <p class="demo-overline"><span class="live-dot" aria-hidden="true"></span> Interactive proof replay · verified trace</p>
+                <h3 id="proof-demo-title">A real 8-bit edge detector, opened one goal at a time.</h3>
+                <p class="demo-lead">This is the circuit from <code>Benchmark/Prob054_edgedetect.lean</code>. Pick an input trace to run the sequential logic, then advance the same four tactics accepted by the local Lean REPL.</p>
+              </div>
+              <div class="demo-badges" aria-label="Demo metadata"><span>PROB054</span><span>BitVec 8</span><span>4 tactics</span></div>
+            </div>
+
+            <div class="proof-demo-grid">
+              <section class="trace-panel" aria-labelledby="trace-title">
+                <div class="demo-panel-head">
+                  <div><span class="panel-index">01</span><h4 id="trace-title">Run the circuit</h4></div>
+                  <span id="trace-status" class="demo-state">TRACE READY</span>
+                </div>
+                <p class="panel-copy">At cycle <code>t</code>, <code>d_last</code> remembers <code>in[t−1]</code>; <code>pedge</code> registers the detected edge.</p>
+                <div class="trace-toolbar">
+                  <label class="trace-select-label" for="trace-pattern">Input trace</label>
+                  <select id="trace-pattern" class="trace-select">
+                    <option value="rising">Rising edges</option>
+                    <option value="burst">Two bursts</option>
+                    <option value="steady">Steady high</option>
+                  </select>
+                  <button id="trace-play" class="demo-button demo-button-primary" type="button">Play trace</button>
+                  <button id="trace-reset" class="demo-button" type="button">Reset</button>
+                </div>
+                <div class="trace-legend" aria-label="Trace legend">
+                  <span><i class="legend-swatch input-swatch"></i>in</span>
+                  <span><i class="legend-swatch delay-swatch"></i>d_last</span>
+                  <span><i class="legend-swatch edge-swatch"></i>in &amp; ~d_last</span>
+                  <span><i class="legend-swatch output-swatch"></i>pedge</span>
+                </div>
+                <div class="trace-table-wrap"><table id="trace-table" class="trace-table" aria-label="Edge detector cycle trace"></table></div>
+                <p id="trace-explanation" class="trace-explanation" aria-live="polite"></p>
+              </section>
+
+              <section class="replay-panel" aria-labelledby="replay-title">
+                <div class="demo-panel-head">
+                  <div><span class="panel-index">02</span><h4 id="replay-title">Replay the proof</h4></div>
+                  <span id="proof-status" class="demo-state">GOAL 1 / 5</span>
+                </div>
+                <div id="proof-step-list" class="proof-step-list" role="list" aria-label="Proof steps"></div>
+                <div id="goal-frame" class="goal-frame">
+                  <div class="goal-bar"><span class="goal-dot" aria-hidden="true"></span><span>CktLean REPL · goal state</span><span id="goal-count">1 goal</span></div>
+                  <pre id="proof-goal" class="proof-goal"><code></code></pre>
+                </div>
+                <p id="proof-explanation" class="proof-explanation" aria-live="polite"></p>
+                <div class="proof-controls">
+                  <button id="proof-prev" class="demo-button" type="button">← Previous</button>
+                  <button id="proof-next" class="demo-button demo-button-primary" type="button">Next tactic →</button>
+                  <button id="proof-run" class="demo-button" type="button">Run proof</button>
+                </div>
+                <div class="proof-replay-footer">
+                  <button id="proof-reset" class="text-button" type="button">Reset</button>
+                  <button id="proof-auto" class="text-button" type="button">Autoplay</button>
+                  <span id="proof-timing">Waiting for tactic</span>
+                </div>
+              </section>
+            </div>
+
+            <div class="proof-demo-foot">
+              <span class="kernel-mark" aria-hidden="true">✓</span>
+              <p><strong>Kernel-accepted source trace.</strong> The replay mirrors the checked sequence <code>unfold</code> → <code>dsimp only</code> → <code>change</code> → <code>rfl</code>. It is a deterministic presentation of that verified trace; the page does not pretend to run Lean in the browser.</p>
+              <a href="https://github.com/menik1126/NL2Chip/blob/main/Benchmark/Prob054_edgedetect.lean" target="_blank" rel="noopener noreferrer">View source ↗</a>
+            </div>
+          </article>
+          <article class="proof-card reveal">
+            <div>
+              <h3>Proof-state feedback is a useful interface.</h3>
+              <p>Run the trace on the left to see the sequential behavior, then advance one tactic at a time. On a 30-problem VerilogEval pilot, stepwise refinement raised kernel-accepted proof completion from 53.3% to 63.3%.</p>
+              <div class="proof-stat"><strong>63.3%</strong><span>kernel-accepted proofs<br>with stepwise feedback</span></div>
+            </div>
+            <div>
+              <div class="proof-divider"></div>
+              <div class="mini-metric"><span>Compile pass</span><strong>77% → 100%</strong></div>
+              <div class="mini-metric"><span>Simulation</span><strong>50% → 70%</strong></div>
+              <div class="mini-metric"><span>Yosys equivalence</span><strong>70% → 73%</strong></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="optimization-grid">
+          <figure class="figure-card reveal">
+            <img src="./static/images/figures/optimization.png" alt="Four plots showing optimization trajectory, area-power gains, proof generation, and tight-clock slack">
+            <figcaption><strong>Optimization and verification signals.</strong> The paper reports non-monotonic but accepted design trajectories, area and power reductions, proof-generation gains, and post-route timing closure.</figcaption>
+          </figure>
+          <div class="reveal">
+            <ul class="reduction-list" aria-label="Architecture exploration reductions">
+              <li class="reduction-item"><div><strong>FSM (Lemmings)</strong><div class="bar"><i style="width: 88%"></i></div></div><span>35.2% area</span></li>
+              <li class="reduction-item"><div><strong>9-to-1 multiplexer</strong><div class="bar"><i style="width: 68%"></i></div></div><span>27.3% area</span></li>
+              <li class="reduction-item"><div><strong>Add/Sub unit</strong><div class="bar"><i style="width: 44%"></i></div></div><span>17.4% area</span></li>
+              <li class="reduction-item"><div><strong>Maximum loop reduction</strong><div class="bar"><i style="width: 100%"></i></div></div><span>58.6% area</span></li>
+            </ul>
+            <p class="section-intro" style="margin-top: 22px; font-size: 0.9rem;">The acceptance rule keeps a candidate only when it passes evaluation, improves at least one metric beyond the threshold, and avoids unacceptable regressions in the other metrics.</p>
+          </div>
+        </div>
+
+        <div class="stack-grid reveal" aria-label="Evaluation stack">
+          <div class="stack-item"><b>Lean REPL</b><span>compile + proof state</span></div>
+          <div class="stack-item"><b>Icarus Verilog</b><span>lint + simulation</span></div>
+          <div class="stack-item"><b>Yosys</b><span>synthesis + formal</span></div>
+          <div class="stack-item"><b>OpenROAD</b><span>P&amp;R + timing</span></div>
+          <div class="stack-item"><b>KLayout</b><span>physical signoff</span></div>
+          <div class="stack-item"><b>SkyWater 130 nm</b><span>standard-cell PDK</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="cite">
+      <div class="section-inner">
+        <div class="citation-card reveal">
+          <div>
+            <p class="section-kicker">05 · Reference</p>
+            <h2>Cite CktFormalizer</h2>
+            <p>The paper is available on <a class="inline-link" href="https://arxiv.org/abs/2605.07782" target="_blank" rel="noopener noreferrer">arXiv</a>, and the code is on <a class="inline-link" href="https://github.com/menik1126/NL2Chip" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+          </div>
+          <a class="button button-primary" href="./static/files/cktformalizer-paper.pdf" target="_blank" rel="noopener">Download PDF</a>
+        </div>
+        <pre class="bibtex reveal"><button id="copy-bibtex" class="copy-button" type="button">Copy</button><code id="bibtex-source">@article{cktformalizer2026,
+  title     = {CktFormalizer: Autoformalization of Natural Language into Circuit Representations},
+  author    = {Jing Xiong and Qi Han and Chenchen Ding and He Xiao and Chaofan Tao and Zunhai Su and Qingyao Yang and Xiachong Feng and Kailai Yang and Ngai Wong},
+  journal   = {arXiv preprint arXiv:2605.07782},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2605.07782}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>CktFormalizer · typed hardware for agentic circuit design</span>
+      <span><a href="./static/files/cktformalizer-paper.pdf" target="_blank" rel="noopener">Paper PDF</a> · <a href="https://github.com/menik1126/NL2Chip" target="_blank" rel="noopener noreferrer">Code</a> · <a href="https://arxiv.org/abs/2605.07782" target="_blank" rel="noopener noreferrer">arXiv</a></span>
+    </div>
+  </footer>
+
+  <script src="./static/js/cktformalizer.js?v=proof-replay-5"></script>
+</body>
+</html>
